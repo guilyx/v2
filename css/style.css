@@ -28,6 +28,7 @@
   --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   --sidebar-w: 264px;
+  --shell-max: 86rem;
   --radius: 10px;
   --ease: cubic-bezier(.4, 0, .2, 1);
 }
@@ -92,9 +93,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- shell ---------- */
 
+/* Sidebar + content are centred together, so wide screens get an even
+   gutter on both sides instead of a wall of dead space on the right. */
 .shell {
   display: grid;
   grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  max-width: var(--shell-max);
+  margin-inline: auto;
   min-height: 100vh;
 }
 
@@ -102,7 +107,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .sidebar {
   border-right: 1px solid var(--line);
-  background: var(--bg-soft);
+  /* Transparent on desktop: once the shell is centred, a filled panel
+     would show a hard edge on its left with nothing to explain it. */
+  background: transparent;
   position: sticky;
   top: 0;
   align-self: start;
@@ -207,8 +214,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---------- main ---------- */
 
 .main {
-  padding: 0 clamp(1.25rem, 5vw, 5rem);
-  max-width: 62rem;
+  width: 100%;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding: 0 clamp(1.25rem, 4vw, 3.5rem);
 }
 
 .section { padding: clamp(3rem, 6vw, 4.5rem) 0; border-bottom: 1px solid var(--line-soft); }
