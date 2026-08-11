@@ -2,29 +2,39 @@
    Erwin Lejeune — portfolio v2
    Hand-written. No framework, no build step.
 
-   The palette sits deliberately between v1 and v3: v1's blue
-   (#2c98f0) and v3's cyan (#4cc9f0) meet at #3cb1f0, and v3's
-   pink (#f72585) shows up only where something is active.
+   Colour comes from guilyx/branding — "Ink & Iris", a neutral-cool
+   near-black under a periwinkle accent. The brand repo is the source
+   of truth; if this file drifts from tokens/tokens.json, this file is
+   wrong.
+
+   The accent is the only saturated value in the system, so it is spent
+   deliberately: mono labels and section keys, links, the one active
+   control in a view, the mark, and focus rings. Not headings, not body
+   copy, not gradients.
    ============================================================ */
 
 /* ---------- tokens ---------- */
 
 :root {
-  --bg:        #0d1117;
-  --bg-soft:   #121a24;
-  --bg-card:   #141d28;
-  --line:      #222d3d;
-  --line-soft: #1a2330;
+  --bg:        #0d0e12;   /* brand: color.bg       */
+  --bg-soft:   #15171d;   /* brand: color.bgRaised */
+  --bg-card:   #15171d;   /* brand: color.surface  */
+  --line:      #252833;   /* brand: color.line     */
+  --line-soft: #1b1e26;   /* derived: between surface and line, for quiet rules */
 
-  --fg:        #e6edf3;
-  --fg-dim:    #9fb0c3;
-  --fg-faint:  #6b7c91;
+  --fg:        #e4e6ec;   /* brand: color.heading */
+  --fg-dim:    #a5aab8;   /* brand: color.body    */
+  --fg-faint:  #7c8291;   /* brand: color.muted   */
 
-  --accent:      #3cb1f0;
-  --accent-soft: rgba(60, 177, 240, .12);
-  --accent-2:    #f72585;
+  /* color.faint (#555b69) is deliberately unused: it is documented as
+     labels >= 14px only, and every mono key here sits around 11px. */
+
+  --accent:      #8b95f0;                    /* brand: color.accent     */
+  --accent-soft: rgba(139, 149, 240, .08);   /* brand: color.accentSoft */
 
   --sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Brand mono is JetBrains Mono, but the shipped lockup SVG itself lists
+     ui-monospace first, so the system face is on-brand and costs nothing. */
   --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   --sidebar-w: 264px;
@@ -33,20 +43,23 @@
   --ease: cubic-bezier(.4, 0, .2, 1);
 }
 
+/* Light theme is "Bone & Rust", the runner-up palette documented in
+   brand/palette.md — the only light ground the brand actually defines.
+   Using it beats inventing a light Ink & Iris: the iris accent drops to
+   roughly 2:1 on a cream ground, and darkening it would fork the palette. */
 html[data-theme="light"] {
-  --bg:        #f7f9fc;
+  --bg:        #f5f3ee;
   --bg-soft:   #ffffff;
   --bg-card:   #ffffff;
-  --line:      #dde5ef;
-  --line-soft: #e8eef6;
+  --line:      #dbd6cb;
+  --line-soft: #e6e2d9;   /* derived, as above */
 
-  --fg:        #16202c;
-  --fg-dim:    #4d5f73;
-  --fg-faint:  #7d8fa3;
+  --fg:        #1b1a17;
+  --fg-dim:    #4b4842;
+  --fg-faint:  #6f6b62;
 
-  --accent:      #2c98f0;
-  --accent-soft: rgba(44, 152, 240, .1);
-  --accent-2:    #d6156e;
+  --accent:      #b0472b;
+  --accent-soft: rgba(176, 71, 43, .08);
 }
 
 /* ---------- reset ---------- */
@@ -86,7 +99,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   z-index: 100;
   padding: .6rem 1rem;
   background: var(--accent);
-  color: #04121c;
+  color: var(--bg);
   font-weight: 700;
 }
 .skip-link:focus { left: 0; }
@@ -124,17 +137,17 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .brand { display: flex; align-items: center; gap: .8rem; color: inherit; }
 .brand:hover { text-decoration: none; }
 
+/* The swarm mark, inlined so currentColor resolves against the page.
+   Rotation is 120deg about the centroid (16, 16.833) - the only interval
+   at which the mark lands back on itself. */
 .brand-mark {
   flex: none;
-  width: 42px; height: 42px;
-  display: grid; place-items: center;
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #fff;
-  font-weight: 700;
-  font-size: .85rem;
-  letter-spacing: .04em;
+  width: 34px; height: 34px;
+  color: var(--accent);
+  transform-origin: 16px 16.833px;
+  transition: transform .5s cubic-bezier(.645, .045, .355, 1);
 }
+.brand:hover .brand-mark { transform: rotate(120deg); }
 
 .brand-text { display: flex; flex-direction: column; line-height: 1.3; }
 .brand-text b { font-size: .95rem; }
@@ -169,9 +182,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .nav a.is-current {
   color: var(--accent);
   background: var(--accent-soft);
-  border-left-color: var(--accent-2);
+  border-left-color: var(--accent);
 }
-.nav a.is-current i { color: var(--accent-2); }
+.nav a.is-current i { color: var(--accent); }
 
 .sidebar-foot {
   margin-top: auto;
@@ -206,7 +219,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .theme-dot {
   width: 11px; height: 11px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 
 .nav-toggle { display: none; }
@@ -235,7 +248,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   font-family: var(--mono);
   font-size: .82rem;
   font-weight: 400;
-  color: var(--accent-2);
+  color: var(--accent);
 }
 .section-title::after {
   content: "";
@@ -263,14 +276,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   width: 7px; height: 7px;
   margin-right: .15rem;
   border-radius: 50%;
-  background: var(--accent-2);
-  box-shadow: 0 0 0 0 var(--accent-2);
+  background: var(--accent);
   animation: pulse 2.6s infinite;
 }
 @keyframes pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(247, 37, 133, .5); }
-  70%  { box-shadow: 0 0 0 8px rgba(247, 37, 133, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0); }
+  0%   { box-shadow: 0 0 0 0 var(--accent-soft); }
+  70%  { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
 
 .hero h1 {
@@ -280,10 +292,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .hero h1 em {
   font-style: normal;
-  background: linear-gradient(100deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent);
 }
 
 .lede { font-size: 1.08rem; color: var(--fg); max-width: 44rem; }
@@ -324,7 +333,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 }
 .btn:hover { border-color: var(--accent); background: var(--accent-soft); text-decoration: none; transform: translateY(-1px); }
 
-.btn-primary { background: var(--accent); border-color: var(--accent); color: #04121c; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
 .btn-primary:hover { background: var(--accent); filter: brightness(1.08); }
 
 /* ---------- timeline ---------- */
@@ -509,7 +518,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: .08em;
-  color: var(--accent-2);
+  color: var(--accent);
   margin-bottom: .7rem;
 }
 .odds ul { display: flex; flex-direction: column; gap: .3rem; }

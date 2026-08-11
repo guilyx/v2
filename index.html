@@ -7,7 +7,7 @@
 <meta name="description" content="Erwin Lejeune — robotics software engineer working on swarm autonomy, ROS2 and real-time embedded systems.">
 <meta name="author" content="Erwin Lejeune">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#0d0e12">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Erwin Lejeune — Robotics Software Engineer">
@@ -15,6 +15,7 @@
 <meta name="twitter:card" content="summary">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap">
@@ -38,7 +39,17 @@
   <header class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <a class="brand" href="#about">
-        <span class="brand-mark" aria-hidden="true">EL</span>
+        <!-- The swarm mark, from guilyx/branding. Inlined rather than <img>
+             so currentColor resolves against the page. Geometry is exact:
+             regenerate with the logo-variants skill, never by hand. -->
+        <svg class="brand-mark" viewBox="0 0 32 32" role="img" aria-label="guilyx swarm mark" focusable="false">
+          <path d="M16 8.5 L8.5 21 L23.5 21 Z" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.45"/>
+          <g fill="currentColor">
+            <circle cx="16" cy="8.5" r="2.1"/>
+            <circle cx="8.5" cy="21" r="2.1"/>
+            <circle cx="23.5" cy="21" r="2.1"/>
+          </g>
+        </svg>
         <span class="brand-text">
           <b>Erwin Lejeune</b>
           <small>Robotics Software Engineer</small>

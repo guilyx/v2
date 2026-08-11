@@ -33,11 +33,37 @@ About · Experience · Projects · Open Source · Writing · Education · Contac
 | Pages          | 9                                | **1**                      | 15 routes                                      |
 | Assets         | 46 MB of GIFs                    | **~40 KB total**           | optimised images                               |
 | Theme          | light, blue `#2c98f0`            | **dark + light toggle**    | dark, neon `#f72585` / `#4cc9f0`               |
+| Colour source  | template defaults                | **`guilyx/branding`**      | its own                                        |
 
-The accent colour, `#3cb1f0`, is the literal midpoint of v1's blue and v3's cyan.
-v3's pink shows up only on active states — the earliest version of the palette
-the later site would eventually commit to. The left sidebar is v1's signature,
-kept and cleaned up.
+The left sidebar is v1's signature, kept and cleaned up.
+
+## Brand
+
+Colour and the mark come from [`guilyx/branding`](https://github.com/guilyx/branding),
+which is the source of truth. If this repo drifts from it, this repo is wrong.
+
+- **Dark** is *Ink & Iris* — `#0d0e12` ground, `#8b95f0` accent.
+- **Light** is *Bone & Rust* — `#f5f3ee` ground, `#b0472b` accent. It is the
+  runner-up palette documented in `brand/palette.md`, used here because it is
+  the only light ground the brand defines; the iris accent falls to roughly
+  2:1 on cream and darkening it would fork the palette.
+- The accent is the only saturated value, and it is spent deliberately: mono
+  keys, links, one active control per view, the mark, focus rings. No
+  gradients.
+
+The logo is the swarm mark — three agents holding a formation. It is inlined in
+`index.html` rather than loaded through `<img>`, because `currentColor` does not
+cross that boundary and the mark would render black.
+
+Regenerate brand assets with the bundled skill; never hand-write the SVG:
+
+```bash
+cd .claude/skills/logo-variants/scripts
+python3 build_mark.py --list
+python3 build_mark.py --variant favicon --out ../../../../favicon.svg
+python3 validate_mark.py ../../../../favicon.svg --tile
+python3 test_validator.py          # 14 cases covering every documented misuse
+```
 
 ## Notes
 
